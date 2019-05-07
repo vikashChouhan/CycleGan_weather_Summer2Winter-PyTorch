@@ -7,13 +7,13 @@ In this notebook, we're going to define and train a CycleGAN to read in an image
 
 Some examples of image data in both sets are pictured below.
 
-<img src='notebook_images/XY_season_images.png' width=50% />
+<img src='../notebook_images/XY_season_images.png' width=50% />
 
 ### Unpaired Training Data
 
 These images do not come with labels, but CycleGANs give us a way to learn the mapping between one image domain and another using an **unsupervised** approach. A CycleGAN is designed for image-to-image translation and it learns from unpaired training data. This means that in order to train a generator to translate images from domain $X$ to domain $Y$, we do not have to have exact correspondences between individual images in those domains. For example, in [the paper that introduced CycleGANs](https://arxiv.org/abs/1703.10593), the authors are able to translate between images of horses and zebras, even though there are no images of a zebra in exactly the same position as a horse or with exactly the same background, etc. Thus, CycleGANs enable learning a mapping from one domain $X$ to another domain $Y$ without having to find perfectly-matched, training pairs!
 
-<img src='notebook_images/horse2zebra.jpg' width=50% />
+<img src='../notebook_images/horse2zebra.jpg' width=50% />
 
 ### CycleGAN and Notebook Structure
 
@@ -203,7 +203,7 @@ A CycleGAN is made of two discriminator and two generator networks.
 
 The discriminators, $D_X$ and $D_Y$, in this CycleGAN are convolutional neural networks that see an image and attempt to classify it as real or fake. In this case, real is indicated by an output close to 1 and fake as close to 0. The discriminators have the following architecture:
 
-<img src='notebook_images/discriminator_layers.png' width=80% />
+<img src='../notebook_images/discriminator_layers.png' width=80% />
 
 This network sees a 128x128x3 image, and passes it through 5 convolutional layers that downsample the image by a factor of 2. The first four convolutional layers have a BatchNorm and ReLu activation function applied to their output, and the last acts as a classification layer that outputs one value.
 
@@ -299,7 +299,7 @@ print(Discriminator())
 
 The generators, `G_XtoY` and `G_YtoX` (sometimes called F), are made of an **encoder**, a conv net that is responsible for turning an image into a smaller feature representation, and a **decoder**, a *transpose_conv* net that is responsible for turning that representation into an transformed image. These generators, one from XtoY and one from YtoX, have the following architecture:
 
-<img src='notebook_images/cyclegan_generator_ex.png' width=90% />
+<img src='../notebook_images/cyclegan_generator_ex.png' width=90% />
 
 This network sees a 128x128x3 image, compresses it into a feature representation as it goes through three convolutional layers and reaches a series of residual blocks. It goes through a few (typically 6 or more) of these residual blocks, then it goes through three transpose convolutional layers (sometimes called *de-conv* layers) which upsample the output of the resnet blocks and create a new image!
 
@@ -310,13 +310,13 @@ Note that most of the convolutional and transpose-convolutional layers have Batc
 
 To define the generators, we're expected to define a `ResidualBlock` class which will help you connect the encoder and decoder portions of the generators. You might be wondering, what exactly is a Resnet block? It may sound familiar from something like ResNet50 for image classification, pictured below.
 
-<img src='notebook_images/resnet_50.png' width=90%/>
+<img src='../notebook_images/resnet_50.png' width=90%/>
 
 ResNet blocks rely on connecting the output of one layer with the input of an earlier layer. The motivation for this structure is as follows: very deep neural networks can be difficult to train. Deeper networks are more likely to have vanishing or exploding gradients and, therefore, have trouble reaching convergence; batch normalization helps with this a bit. However, during training, we often see that deep networks respond with a kind of training degradation. Essentially, the training accuracy stops improving and gets saturated at some point during training. In the worst cases, deep models would see their training accuracy actually worsen over time!
 
 One solution to this problem is to use **Resnet blocks** that allow us to learn so-called *residual functions* as they are applied to layer inputs. You can read more about this proposed architecture in the paper, [Deep Residual Learning for Image Recognition](https://arxiv.org/pdf/1512.03385.pdf) by Kaiming He et. al, and the below image is from that paper.
 
-<img src='notebook_images/resnet_block.png' width=40%/>
+<img src='../notebook_images/resnet_block.png' width=40%/>
 
 ### Residual Functions
 
@@ -858,7 +858,7 @@ print_models(G_XtoY, G_YtoX, D_X, D_Y)
 
 Computing the discriminator and the generator losses are key to getting a CycleGAN to train.
 
-<img src='notebook_images/CycleGAN_loss.png' width=90% height=90% />
+<img src='../notebook_images/CycleGAN_loss.png' width=90% height=90% />
 
 **Image from [original paper](https://arxiv.org/abs/1703.10593) by Jun-Yan Zhu et. al.**
 
@@ -890,7 +890,7 @@ In addition to the adversarial losses, the generator loss terms will also includ
 
 Say you have a fake, generated image, `x_hat`, and a real image, `y`. We can get a reconstructed `y_hat` by applying `G_XtoY(x_hat) = y_hat` and then check to see if this reconstruction `y_hat` and the orginal image `y` match. For this, we recommed calculating the L1 loss, which is an absolute difference, between reconstructed and real images. We may also choose to multiply this loss by some weight value `lambda_weight` to convey its importance.
 
-<img src='notebook_images/reconstruction_error.png' width=40% height=40% />
+<img src='../notebook_images/reconstruction_error.png' width=40% height=40% />
 
 The total generator loss will be the sum of the generator losses and the forward and backward cycle consistency losses.
 
@@ -968,7 +968,7 @@ When a CycleGAN trains, and sees one batch of real images from set $X$ and $Y$, 
 5. Repeat steps 1-4 only swapping domains
 6. Add up all the generator and reconstruction losses and perform backpropagation + optimization
 
-<img src='notebook_images/cycle_consistency_ex.png' width=70% />
+<img src='../notebook_images/cycle_consistency_ex.png' width=70% />
 
 
 ### Saving Your Progress
@@ -1407,7 +1407,7 @@ plt.legend()
 
 As you trained this model, you may have chosen to sample and save the results of your generated images after a certain number of training iterations. This gives you a way to see whether or not your Generators are creating *good* fake images. For example, the image below depicts real images in the $Y$ set, and the corresponding generated images during different points in the training process. You can see that the generator starts out creating very noisy, fake images, but begins to converge to better representations as it trains (though, not perfect).
 
-<img src='notebook_images/sample-004000-summer2winter.png' width=50% />
+<img src='../notebook_images/sample-004000-summer2winter.png' width=50% />
 
 Below, you've been given a helper function for displaying generated samples based on the passed in training iteration.
 
