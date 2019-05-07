@@ -6,4 +6,4 @@ images.
 
 All the steps are provided in jupyter notebook.
 
-**[Since, notebook not open in github editor, a separate markdown file provided]**
+**[Since, notebook could not open in github editor, a separate markdown file is provided]**
