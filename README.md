@@ -6,4 +6,4 @@ images.
 
 All the steps are provided in jupyter notebook.
 
-**[Since, notebook could not open in github editor, a separate markdown file is provided]**
+**[Since, notebook could not open in github editor, a separate markdown file is provided [here](CycleGAN_%20markdown/CycleGAN.md)]**
